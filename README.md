@@ -51,8 +51,19 @@ first request.
 
 ## Pipecat compatibility
 
+**Tested with Pipecat v1.7.0** on Python 3.12.11 (2026-08-07): clean virtual
+environment, `pip install` exit 0, imports, 11/11 unit tests pass, service
+constructs.
+
 Built against the `WebsocketTTSService` base class and the audio-context API,
 so it supports `pipecat-ai` from `0.0.108` up to (but not including) `2.0.0`.
+The declared floor is `0.0.108` because that is what it was written against;
+the tested figure above crosses a major version and about a year of API drift,
+which is the number worth trusting.
+
+Not claimed: no live socket has been opened against the service in that test.
+It covers install, import, unit tests and construction. Rendering audio costs
+money, so it is left to whoever runs it.
 
 ## Installation
 

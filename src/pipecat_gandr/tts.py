@@ -134,6 +134,13 @@ class GandrTTSService(WebsocketTTSService):
         @field_validator("voice_id")
         @classmethod
         def validate_voice_id(cls, v: Optional[str]) -> Optional[str]:
+            """Reject a blank voice id.
+
+            An empty string is not the same as omitting the field: omitted
+            means "use the service default", blank means somebody built the
+            value from a variable that was not set. The door would answer
+            bad_voice, but by then it is a runtime error in a live call.
+            """
             if v is not None and not v.strip():
                 raise ValueError("voice_id cannot be empty or whitespace")
             return v
@@ -141,6 +148,14 @@ class GandrTTSService(WebsocketTTSService):
         @field_validator("language")
         @classmethod
         def validate_language(cls, v: Optional[str]) -> Optional[str]:
+            """Reject a blank language tag.
+
+            Same reasoning as voice_id. Note the door takes BARE two-letter
+            codes — en, es, fr, de, pt, ar, zh, ja — and ignores a region
+            suffix, so "en-GB" silently renders as English rather than
+            failing. That is not checked here because the accepted set is
+            the service's to define, not this plugin's to freeze.
+            """
             if v is not None and not v.strip():
                 raise ValueError("language cannot be empty or whitespace")
             return v
@@ -148,6 +163,13 @@ class GandrTTSService(WebsocketTTSService):
         @field_validator("sample_rate")
         @classmethod
         def validate_sample_rate(cls, v: Optional[int]) -> Optional[int]:
+            """Restrict to the rates the service actually serves.
+
+            An unsupported rate is worth catching here rather than at the
+            socket: a pipeline whose output rate disagrees with the rest of
+            its chain produces audio that plays at the wrong pitch, which
+            reads as a voice-quality problem rather than a config one.
+            """
             if v is not None and v not in SAMPLE_RATES:
                 raise ValueError(
                     f"sample_rate must be one of {list(SAMPLE_RATES)}, got {v}"
@@ -157,6 +179,13 @@ class GandrTTSService(WebsocketTTSService):
         @field_validator("speed")
         @classmethod
         def validate_speed(cls, v: Optional[float]) -> Optional[float]:
+            """Bound speed to 0.6-1.5.
+
+            Outside that range the engine still renders, and the result is
+            unusable rather than merely fast or slow. Bounding it at
+            construction turns a bad-sounding call into an error a
+            developer sees while writing the code.
+            """
             if v is not None and not (0.6 <= v <= 1.5):
                 raise ValueError(f"speed must be between 0.6 and 1.5, got {v}")
             return v
@@ -164,6 +193,11 @@ class GandrTTSService(WebsocketTTSService):
         @field_validator("volume")
         @classmethod
         def validate_volume(cls, v: Optional[float]) -> Optional[float]:
+            """Bound volume to 0.5-2.0, for the same reason as speed.
+
+            The upper end clips rather than getting louder, and clipping in
+            a phone call is indistinguishable from a broken connection.
+            """
             if v is not None and not (0.5 <= v <= 2.0):
                 raise ValueError(f"volume must be between 0.5 and 2.0, got {v}")
             return v
