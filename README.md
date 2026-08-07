@@ -67,21 +67,37 @@ money, so it is left to whoever runs it.
 
 ## Installation
 
-### Using pip
-
 ```bash
-pip install pipecat-gandr
+uv pip install git+https://github.com/Gandr-AI/gandr-pipecat.git
 ```
 
-### Using uv
+or with pip:
 
 ```bash
-uv add pipecat-gandr
+pip install git+https://github.com/Gandr-AI/gandr-pipecat.git
 ```
+
+<!-- CORRECTED 2026-08-07, and the correction is the point. This section
+     said `pip install pipecat-gandr` / `uv add pipecat-gandr` while the
+     package was NOT on PyPI — pypi.org/simple/pipecat-gandr/ returns 404.
+     Anyone following the README got an error on the first command, which is
+     the worst possible first impression for an integration whose entire job
+     is to be easy to adopt.
+
+     Caught by Mark Backman reviewing pipecat-ai/docs#1062: "maybe you don't
+     have a PyPI package. That means that your repo is inaccurate. Either
+     way, please review to make sure the right information is in both
+     places." He was right, and the docs PR and this README now agree.
+
+     WHEN THE PYPI PACKAGE IS PUBLISHED, this section becomes `uv add
+     pipecat-gandr` and the two lines in the docs PR change with it. Both
+     places, same commit — that is the whole lesson here. -->
 
 ### From source
 
 ```bash
+git clone https://github.com/Gandr-AI/gandr-pipecat.git
+cd gandr-pipecat
 pip install -e .
 ```
 
@@ -253,7 +269,7 @@ reports is the one it measured itself.
 ## Pricing
 
 - **$10 per million characters**, prepaid packs.
-- **$150 per stream per month — unlimited, unmetered.**
+- **$150 per stream per month.**
 
 See [gandr.ai/pricing](https://gandr.ai/pricing).
 
