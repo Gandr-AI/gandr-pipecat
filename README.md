@@ -253,7 +253,7 @@ reports is the one it measured itself.
 ## Pricing
 
 - **$10 per million characters**, prepaid packs.
-- **$150 per stream per month.**
+- **$150 per stream per month — unlimited, unmetered.**
 
 See [gandr.ai/pricing](https://gandr.ai/pricing).
 
