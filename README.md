@@ -147,7 +147,7 @@ Constructor arguments beyond `api_key` and `params`:
 
 | Argument | Default | Description |
 |---|---|---|
-| `url` | `wss://tts-west.gandr.ai/ws` | Streaming endpoint |
+| `url` | `wss://tts.gandr.ai/ws` | Streaming endpoint |
 | `text_aggregation_mode` | `None` | How Pipecat aggregates text before synthesis |
 | `utterance_timeout_s` | `30.0` | How long to wait for an utterance's closing frame |
 | `busy_retry_s` | `0.5` | Wait before retrying after the server answers `busy` |
@@ -196,7 +196,7 @@ Stock voices: `gandr-mia`, `gandr-ava`, `gandr-jenny`, `gandr-dane`,
 
 ## How the integration works
 
-The service holds one WebSocket to `wss://tts-west.gandr.ai/ws` for the life of
+The service holds one WebSocket to `wss://tts.gandr.ai/ws` for the life of
 the pipeline. Each utterance is a JSON message; the server answers with binary
 frames of raw PCM16LE mono audio as it renders, then a JSON frame that closes
 the utterance.
