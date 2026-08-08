@@ -37,7 +37,7 @@ neutral US vantage over a held WebSocket. Every pairwise gap is significant
 (p=0.0009 / 0.0041 / <0.001).
 
 Read that claim precisely: it is the **first audio byte**, the moment audio
-starts arriving on the socket — not the moment a listener hears speech. It is
+starts arriving on the socket, not the moment a listener hears speech. It is
 the number a pipeline can actually act on, and it is the one we publish.
 
 **116 ms server-side p50**, min 104 / max 130.
@@ -138,9 +138,9 @@ A complete runnable pipeline is in
 | `sample_rate` | `int` | `24000` | `8000`, `16000`, `22050`, `24000` | Output rate. Takes priority over a `sample_rate` passed to the constructor |
 | `speed` | `float` | `None` | `0.6` to `1.5` | Playback speed, pitch preserving |
 | `volume` | `float` | `None` | `0.5` to `2.0` | Output gain, soft-ceiling mastered |
-| `temperature` | `float` | `None` | — | Expression control. Omit and the API chooses |
-| `cfg_weight` | `float` | `None` | — | Expression control. Omit and nothing is sent |
-| `seed` | `int` | `None` | — | Fixes the render for a reproducible result |
+| `temperature` | `float` | `None` |, | Expression control. Omit and the API chooses |
+| `cfg_weight` | `float` | `None` |, | Expression control. Omit and nothing is sent |
+| `seed` | `int` | `None` |, | Fixes the render for a reproducible result |
 | `voice_wav_b64` | `str` | `None` | base64 WAV | Reference audio for a cloned voice |
 
 Constructor arguments beyond `api_key` and `params`:
@@ -156,7 +156,7 @@ Constructor arguments beyond `api_key` and `params`:
 
 **On `sample_rate`:** 24000 is the API's default output rate and the right
 choice for almost every agent, including telephony. If your transport needs
-narrowband, let the transport resample — Pipecat does it for free — rather than
+narrowband, let the transport resample, Pipecat does it for free, rather than
 asking the server for a narrowband stream.
 
 ### Changing voice mid-session
@@ -214,7 +214,7 @@ cancelled.
 ## Interruptions
 
 The wire protocol has no cancel message. When the user barges in, audio already
-rendering is discarded client-side — but it would still occupy the connection,
+rendering is discarded client-side, but it would still occupy the connection,
 and the next turn's first byte would queue behind audio nobody is listening to.
 
 So by default (`reconnect_on_interruption=True`) the service reopens the
@@ -225,8 +225,8 @@ that the next turn waits for the interrupted render to drain.
 
 The API caps a single request's transcript at 2000 characters. Pipecat normally
 hands over a sentence at a time, so this rarely comes up; when it does, the
-service splits the text on the cleanest boundary it can find — sentence end
-first, then a word boundary — and sends the pieces back to back on the same
+service splits the text on the cleanest boundary it can find, sentence end
+first, then a word boundary, and sends the pieces back to back on the same
 connection under the same turn. Nothing is dropped, and only the last piece
 closes the turn.
 
@@ -241,7 +241,7 @@ the utterance had not yet reached the wire, resending it.
 
 `can_generate_metrics()` is `True`.
 
-Time to first byte is stopped on **the first audio byte off the wire** — the
+Time to first byte is stopped on **the first audio byte off the wire**, the
 same event the 146 ms claim above measures, so what your dashboard shows is
 directly comparable to what we publish. Usage metrics are reported per request
 from the full text of the turn.
@@ -267,8 +267,7 @@ DEEPGRAM_API_KEY=your_deepgram_key_here  # if using with STT
 
 ## Examples
 
-- [`examples/foundational/gandr_tts_basic.py`](./examples/foundational/gandr_tts_basic.py)
-  — full pipeline with STT, LLM and TTS over the local audio transport.
+- [`examples/foundational/gandr_tts_basic.py`](./examples/foundational/gandr_tts_basic.py), full pipeline with STT, LLM and TTS over the local audio transport.
 
 ```bash
 uv add "pipecat-ai[deepgram,openai,silero,local]"
