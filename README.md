@@ -252,7 +252,7 @@ reports is the one it measured itself.
 
 ## Pricing
 
-- **$10 per million characters**, prepaid packs.
+- **$10 a month for one million tokens** (one token is one character), resets monthly.
 - **$150 per stream per month.**
 
 See [gandr.ai/pricing](https://gandr.ai/pricing).
