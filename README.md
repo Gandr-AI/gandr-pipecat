@@ -31,16 +31,9 @@ voice and multimodal conversational agents.
 
 ## Why Gandr
 
-**146 ms to first audio byte over the open internet.** Client-measured p50,
-n=25 interleaved runs against each named competitor in the same hours, from a
-neutral US vantage over a held WebSocket. Every pairwise gap is significant
-(p=0.0009 / 0.0041 / <0.001).
-
-Read that claim precisely: it is the **first audio byte**, the moment audio
-starts arriving on the socket, not the moment a listener hears speech. It is
-the number a pipeline can actually act on, and it is the one we publish.
-
-**116 ms server-side p50**, min 104 / max 130.
+**Audio streams back as it is generated.** The first bytes arrive while the rest
+of the utterance is still rendering, so a pipeline can start playback instead of
+waiting on a finished clip.
 
 **WER 1.982%, against a 2.171% human baseline.** One `whisper-large-v3` scorer
 transcribed everything, including the human baseline, so the two numbers are
@@ -241,10 +234,9 @@ the utterance had not yet reached the wire, resending it.
 
 `can_generate_metrics()` is `True`.
 
-Time to first byte is stopped on **the first audio byte off the wire**, the
-same event the 146 ms claim above measures, so what your dashboard shows is
-directly comparable to what we publish. Usage metrics are reported per request
-from the full text of the turn.
+Time to first byte is stopped on **the first audio byte off the wire**, so what
+your dashboard shows is the same event the service itself measures. Usage metrics
+are reported per request from the full text of the turn.
 
 The server reports its own timings on the frame that closes each utterance.
 This service neither consumes nor logs them, so the only latency it ever
