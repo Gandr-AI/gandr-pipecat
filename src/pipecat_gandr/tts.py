@@ -1,6 +1,6 @@
 """Gandr text-to-speech service for Pipecat.
 
-Streams audio from Gandr's WebSocket surface at ``wss://tts-west.gandr.ai/ws``.
+Streams audio from Gandr's WebSocket surface at ``wss://tts.gandr.ai/ws``.
 
 Wire protocol (documented at https://gandr.ai/docs):
 
@@ -55,7 +55,7 @@ except ModuleNotFoundError as e:
 
 
 #: Default streaming endpoint.
-DEFAULT_WS_URL = "wss://tts-west.gandr.ai/ws"
+DEFAULT_WS_URL = "wss://tts.gandr.ai/ws"
 
 #: Output rates the API renders at.
 SAMPLE_RATES = (8000, 16000, 22050, 24000)
