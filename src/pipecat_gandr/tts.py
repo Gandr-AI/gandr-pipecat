@@ -151,7 +151,7 @@ class GandrTTSService(WebsocketTTSService):
             """Reject a blank language tag.
 
             Same reasoning as voice_id. Note the door takes BARE two-letter
-            codes — en, es, fr, de, pt, ar, zh, ja — and ignores a region
+            codes, en, es, fr, de, pt, ar, zh, ja, and ignores a region
             suffix, so "en-GB" silently renders as English rather than
             failing. That is not checked here because the accepted set is
             the service's to define, not this plugin's to freeze.

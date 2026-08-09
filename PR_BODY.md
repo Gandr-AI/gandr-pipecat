@@ -80,12 +80,8 @@ waiting for audio that is not coming.
 
 ## Numbers
 
-- **146 ms to first audio byte** over the open internet. Client-measured p50,
-  n=25 interleaved runs against each named competitor in the same hours, from a
-  neutral US vantage over a held WebSocket. All pairwise gaps significant
-  (p=0.0009 / 0.0041 / <0.001). This is the first audio byte, not the moment a
-  listener hears speech.
-- **116 ms server-side p50**, min 104 / max 130.
+- **No latency figure, deliberately.** The single-stream run was withdrawn on
+  2026-08-08 when the serving hardware changed. The harness is published.
 - **WER 1.982%** against a **2.171%** human baseline, one `whisper-large-v3`
   scorer used for everything including the human baseline, n=1,088, zero render
   errors.
@@ -108,7 +104,7 @@ What has been done:
   integration.
 - The request splitter has 11 unit tests covering the cap, losslessness,
   sentence and word boundaries, and a single token longer than the cap. They
-  were then checked against eight mutations of the splitter — removing the
+  were then checked against eight mutations of the splitter, removing the
   sentence rule, removing the word rule, dropping the terminator adjustment,
   dropping the limit guard, losing the trailing remainder, and three
   off-by-ones. All eight turn the suite red, so the green result is load

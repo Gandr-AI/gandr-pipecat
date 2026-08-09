@@ -29,7 +29,7 @@ reading this file to find out what moved.
   definition in `tts.py` documents itself as Pipecat's contribution
   guidelines require.
 
-## [0.1.0] — 2026-08-06
+## [0.1.0], 2026-08-06
 
 ### Added
 
@@ -48,7 +48,7 @@ reading this file to find out what moved.
   cancel frame, so the alternative was draining audio nobody will hear.
 - **The first turn on a fresh socket runs about 700 ms** while the session
   voice cache fills; every turn after is far quicker. This is why the socket
-  is held warm across turns rather than opened per utterance — a benchmark
+  is held warm across turns rather than opened per utterance, a benchmark
   that measures turn one measures the cache filling, not the engine.
 - **Every failure path closes the turn with `TTSStoppedFrame`**, so a
   pipeline cannot hang waiting on a socket that has died.
