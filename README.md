@@ -39,9 +39,6 @@ waiting on a finished clip.
 transcribed everything, including the human baseline, so the two numbers are
 comparable. n=1,088, zero render errors.
 
-Under load, overflow spills to a fallback lane that can take longer on its
-first request.
-
 ## Pipecat compatibility
 
 **Tested with Pipecat v1.7.0** on Python 3.12.11 (2026-08-07): clean virtual
