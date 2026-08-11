@@ -89,7 +89,7 @@ waiting for audio that is not coming.
 Under load, overflow spills to a fallback lane that can take longer on its
 first request.
 
-Pricing is $10 per million characters on prepaid packs, and $150 per stream per
+Pricing is $10 per million tokens on prepaid packs, and $150 per stream per
 month.
 
 ## Verification
