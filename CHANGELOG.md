@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- Docs: the seed description no longer overstates reproducibility; renders
+  are currently non-deterministic regardless of the value.
+
 ## 0.1.3
 
 - Word timestamps: set InputParams(word_timestamps=True) and the closing
