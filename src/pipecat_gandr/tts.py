@@ -135,6 +135,7 @@ class GandrTTSService(WebsocketTTSService):
         cfg_weight: Optional[float] = None
         seed: Optional[int] = None
         voice_wav_b64: Optional[str] = None
+        word_timestamps: Optional[bool] = None
 
         @field_validator("voice_id")
         @classmethod
