@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- Word timestamps: set InputParams(word_timestamps=True) and the closing
+  frame's per-word offsets are fed into Pipecat's word-timestamp machinery.
+
 All notable changes to `pipecat-gandr` are recorded here.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
