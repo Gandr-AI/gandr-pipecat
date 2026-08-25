@@ -42,6 +42,7 @@ from pipecat.frames.frames import (
 )
 from pipecat.services.settings import TTSSettings
 from pipecat.services.tts_service import TextAggregationMode, WebsocketTTSService
+from pipecat.utils.text.word_timestamp_utils import merge_punct_tokens
 from pipecat.utils.tracing.service_decorators import traced_tts
 
 from pipecat_gandr._text import MAX_REQUEST_CHARS, split_for_request
@@ -82,6 +83,7 @@ class _Utterance:
     text: str
     context_id: str
     is_final: bool
+    wants_ts: bool = False
     done: asyncio.Event = field(default_factory=asyncio.Event)
     error: Optional[str] = None
     needs_voice: bool = False
@@ -116,6 +118,9 @@ class GandrTTSService(WebsocketTTSService):
             temperature: Expression control. Omit to let the API choose.
             cfg_weight: Expression control. Omit to send nothing at all.
             seed: Fixes the render for a reproducible result.
+            word_timestamps: Ask for word-level timing. The closing frame then
+                carries per-word offsets, which this service feeds into
+                Pipecat's word-timestamp machinery for highlighting.
             voice_wav_b64: Base64 WAV of reference audio for a cloned voice.
                 Sent with the first utterance on each connection, which
                 registers the voice for that connection.
@@ -292,6 +297,7 @@ class GandrTTSService(WebsocketTTSService):
             "seed": params.seed,
         }
         self._voice_wav_b64 = params.voice_wav_b64
+        self._want_word_ts = bool(params.word_timestamps)
 
         self._websocket: Optional[ClientConnection] = None
         self._receive_task: Optional[asyncio.Task[None]] = None
@@ -559,6 +565,17 @@ class GandrTTSService(WebsocketTTSService):
             # latency it ever reports is the client-side one above.
             if utterance is None:
                 return
+            raw_ts = data.get("word_timestamps")
+            if utterance.wants_ts and raw_ts:
+                pairs = [
+                    (w["word"], float(w["start"]))
+                    for w in raw_ts
+                    if isinstance(w, dict) and "word" in w and "start" in w
+                ]
+                if pairs:
+                    await self.add_word_timestamps(
+                        merge_punct_tokens(pairs), context_id=utterance.context_id
+                    )
             utterance.done.set()
             return
 
@@ -659,9 +676,10 @@ class GandrTTSService(WebsocketTTSService):
             self._inflight = utterance
 
             try:
-                await self._get_websocket().send(
-                    json.dumps(self._build_message(utterance.text, include_voice=send_voice))
-                )
+                message = self._build_message(utterance.text, include_voice=send_voice)
+                if utterance.wants_ts:
+                    message["add_timestamps"] = True
+                await self._get_websocket().send(json.dumps(message))
             except Exception as e:
                 self._inflight = None
                 if attempts < self._max_attempts:
@@ -842,7 +860,12 @@ class GandrTTSService(WebsocketTTSService):
             last = len(pieces) - 1
             for index, piece in enumerate(pieces):
                 await self._outbox.put(
-                    _Utterance(text=piece, context_id=context_id, is_final=index == last)
+                    _Utterance(
+                        text=piece,
+                        context_id=context_id,
+                        is_final=index == last,
+                        wants_ts=self._want_word_ts,
+                    )
                 )
         except Exception as e:
             logger.error(f"{self} error queueing utterance: {e}")

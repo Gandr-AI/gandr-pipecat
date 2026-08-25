@@ -132,6 +132,7 @@ A complete runnable pipeline is in
 | `cfg_weight` | `float` | `None` |, | Expression control. Omit and nothing is sent |
 | `seed` | `int` | `None` |, | Fixes the render for a reproducible result |
 | `voice_wav_b64` | `str` | `None` | base64 WAV | Reference audio for a cloned voice |
+| `word_timestamps` | `bool` | `None` | on/off | Word-level timing: the utterance tail then carries per-word offsets, fed into Pipecat's word-timestamp machinery for highlighting |
 
 Constructor arguments beyond `api_key` and `params`:
 
