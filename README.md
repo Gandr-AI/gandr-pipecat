@@ -130,7 +130,7 @@ A complete runnable pipeline is in
 | `volume` | `float` | `None` | `0.5` to `2.0` | Output gain, soft-ceiling mastered |
 | `temperature` | `float` | `None` |, | Expression control. Omit and the API chooses |
 | `cfg_weight` | `float` | `None` |, | Expression control. Omit and nothing is sent |
-| `seed` | `int` | `None` |, | Fixes the render for a reproducible result |
+| `seed` | `int` | `None` |, | Accepted and forwarded; renders are currently non-deterministic regardless of value |
 | `voice_wav_b64` | `str` | `None` | base64 WAV | Reference audio for a cloned voice |
 | `word_timestamps` | `bool` | `None` | on/off | Word-level timing: the utterance tail then carries per-word offsets, fed into Pipecat's word-timestamp machinery for highlighting |
 

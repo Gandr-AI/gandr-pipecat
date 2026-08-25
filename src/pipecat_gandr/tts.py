@@ -117,7 +117,8 @@ class GandrTTSService(WebsocketTTSService):
             volume: Output gain, 0.5 to 2.0, soft-ceiling mastered.
             temperature: Expression control. Omit to let the API choose.
             cfg_weight: Expression control. Omit to send nothing at all.
-            seed: Fixes the render for a reproducible result.
+            seed: Accepted and forwarded to the engine; results are
+                currently non-deterministic regardless of the value.
             word_timestamps: Ask for word-level timing. The closing frame then
                 carries per-word offsets, which this service feeds into
                 Pipecat's word-timestamp machinery for highlighting.
