@@ -91,4 +91,4 @@ async def test_word_timestamps_off_keeps_wire_clean():
 
     assert not any(isinstance(f, ErrorFrame) for f in down + up)
     assert "add_timestamps" not in captured["messages"][0]
-    assert not spy.awaited
+    spy.assert_not_awaited()
